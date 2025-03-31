@@ -13,25 +13,36 @@ logging.basicConfig(level=logging.INFO,
 
 class AgentClient:
 
-    def __init__(self):
+    def __init__(self, HOST, USERNAME, PASSWORD):
+        """
     
+        Initialize the AgentClient with device credentials.
+        :param HOST: The host of the Cisco device.
+        :param USERNAME: The username for the Cisco device.
+        :param PASSWORD: The password for the Cisco device.
+        """
         self.device_info = {
             'device_type': 'cisco_ios',
-            'host': os.getenv("CISCO_HOST"),
-            'username': os.getenv("CISCO_USERNAME"),
-            'password': os.getenv("CISCO_PASSWORD"),
+            'host': HOST,
+            'username': USERNAME,
+            'password': PASSWORD,
         }
 
         self.api_key = os.getenv("API_KEY")
         self.logger = logging.getLogger(__name__)
 
-    def show_command(self, command):
+    def show_command(self, command, HOST, USERNAME, PASSWORD):
         """
         Send a show command to the Cisco device and return the output.
         :param command: The command to be executed on the device.
         :return: The output of the command.
         """
         try:
+            self.device_info['host'] = HOST
+            self.device_info['username'] = USERNAME
+            self.device_info['password'] = PASSWORD
+            
+            self.logger.info(f"Connecting to {self.device_info['host']} with provided credentials.")
             with ConnectHandler(**self.device_info) as connection:
                 self.logger.info(f"Connected to {self.device_info['host']}")
                 self.logger.info(f"Sending command: {command}")
@@ -47,13 +58,16 @@ class AgentClient:
             self.logger.error(f"Failed to execute command '{command}' on {self.device_info['host']}: {e}")
             return None
 
-    def config_command(self, commands: list):
+    def config_command(self, commands, HOST, USERNAME, PASSWORD):
         """
         Send configuration commands to the Cisco device and return the output.
         :param commands: A list of configuration commands to be executed.
         :return: The output of the commands.
         """
         try:
+            self.device_info['host'] = HOST
+            self.device_info['username'] = USERNAME
+            self.device_info['password'] = PASSWORD
             with ConnectHandler(**self.device_info) as connection:
                 self.logger.info(f"Connected to {self.device_info['host']}")
                 self.logger.info(f"Applying configuration commands: {commands}")

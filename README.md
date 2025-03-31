@@ -118,11 +118,13 @@ The tool uses:
 - **Python-dotenv**: For environment variable management
 - **Large Language Models**: For understanding network engineering requests
 
-When you enter a request, the system:
-1. Interprets your natural language command
-2. Converts it to appropriate Cisco IOS commands
-3. Executes the command on your device
-4. Returns the results in a human-readable format
+```bash
+#Install mcp server to your Claude Desktop
+mcp install mcp_server.py
+
+#Inscpect your tool
+mcp dev mcp_server.py
+```
 
 ## Dependencies
 
@@ -139,3 +141,4 @@ This project relies on several key Python packages:
 ## Contributing
 
 [Add contribution guidelines here]
+
