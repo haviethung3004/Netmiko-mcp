@@ -47,11 +47,8 @@ This project uses UV for efficient Python environment and package management. UV
 
 3. Install dependencies with UV:
    ```bash
-   # Install dependencies from pyproject.toml
-   uv pip install -e .
-   
-   # Or install from requirements.txt
-   uv pip sync requirements.txt
+   # Sync dependencies
+   uv sync
    ```
 
 4. Update dependencies:
@@ -92,7 +89,7 @@ This project uses UV for efficient Python environment and package management. UV
    CISCO_HOST=<your_cisco_device_ip>
    CISCO_USERNAME=<your_cisco_username>
    CISCO_PASSWORD=<your_cisco_password>
-   API_KEY=<your_api_key>
+   API_KEY=<your_api_key> # Don't use for this project
    ```
 
 ## Components
