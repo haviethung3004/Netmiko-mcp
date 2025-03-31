@@ -20,8 +20,7 @@ This enterprise-grade application provides a sophisticated interface for interac
 ## 🔧 System Requirements
 
 - Python 3.13 or higher
-- Cisco network device(s) accessible via SSH
-- API key for Mistral AI or OpenAI (for AI assistance)
+- Cisco network device(s) accessible via SSH or you can use (CML Cisco sandbox)
 - Windows/Linux/macOS compatible
 
 ## 🚀 Quick Start
@@ -106,6 +105,8 @@ For this example, we use Cisco Modeling Labs (CML) on Cisco Sandbox to manage mu
 
 ![CML Cisco Sandbox](image/CML_Cisco_Sandbox.png)
 
+This case for SSH, so you need configure SSH for every device, by default, this device use telnet
+
 The system processes natural language requests for network operations through Claude Desktop:
 
 ![Claude Desktop Integration](image/Claude_Desktop.png)
@@ -113,7 +114,7 @@ The system processes natural language requests for network operations through Cl
 Example commands you can use:
 
 ```
-"Show the running interfaces on the router"
+"Show the running interfaces on the router R1 and R2"
 
 "Configure interface GigabitEthernet0/1 with IP 192.168.1.1/24"
 
