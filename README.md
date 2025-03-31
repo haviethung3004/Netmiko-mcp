@@ -1,144 +1,154 @@
-# Network Automation Tool
+# Cisco Network Automation Tool
 
-A powerful tool for automating Cisco network device configuration and management using AI-powered assistance.
+![Network Automation](image/image.png)
 
-## Overview
+A powerful, AI-assisted solution for automating Cisco network device configuration and management.
 
-This project provides an interface for interacting with Cisco network devices. It allows for executing both show commands and configuration commands with a focus on simplifying network management tasks.
+[![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-## Features
+## 📋 Overview
 
-- Execute show commands on Cisco devices
-- Apply configuration changes to network devices
-- Natural language processing of network commands
-- Simplified network management workflows
+This enterprise-grade application provides a sophisticated interface for interacting with Cisco network devices through an AI-powered automation layer. It streamlines network management by enabling both monitoring (show commands) and configuration changes with natural language processing capabilities.
 
-## Requirements
+## ✨ Key Features
 
-- Python 3.13+
+- **Command Execution**: Execute show commands on Cisco devices with simplified syntax
+- **Configuration Management**: Apply configuration changes to network devices safely
+- **Natural Language Processing**: Interpret network commands through conversational language
+- **Streamlined Workflows**: Simplify complex network management tasks
+- **Claude Integration**: Works as an MCP extension for Claude Desktop
+
+## 🔧 System Requirements
+
+- Python 3.13 or higher
 - Cisco network device(s) accessible via SSH
-- API key for Mistral AI or OpenAI
+- API key for Mistral AI or OpenAI (for AI assistance)
+- Windows/Linux/macOS compatible
 
-## Python Environment Management
+## 🚀 Quick Start
 
-This project uses UV for efficient Python environment and package management. UV is a modern, fast Python package installer and resolver that significantly outperforms pip.
+### Environment Setup with UV
 
-1. Install UV:
-   ```bash
-   # Install UV using pip
-   pip install uv
-   
-   # Verify installation
-   uv --version
-   ```
+This project leverages UV for efficient Python environment and package management:
 
-2. Create and activate a virtual environment with UV:
-   ```bash
-   # Navigate to your project directory
-   cd MCP_Network_automate
-   
-   # Create virtual environment
-   uv venv
-   
-   # Activate the virtual environment
-   # On Windows
-   .venv\Scripts\activate
-   ```
+```bash
+# Install UV
+pip install uv
 
-3. Install dependencies with UV:
-   ```bash
-   # Sync dependencies
-   uv sync
-   ```
+# Create and activate virtual environment
+cd MCP_Network_automator
+uv venv
+.venv\Scripts\activate  # Windows
+# source .venv/bin/activate  # Linux/macOS
 
-4. Update dependencies:
-   ```bash
-   # Update dependencies to their latest compatible versions
-   uv pip compile pyproject.toml -o requirements.txt
-   
-   # Apply updates
-   uv pip sync requirements.txt
-   ```
+# Install dependencies
+uv sync
+```
 
-5. Check for outdated packages:
-   ```bash
-   uv pip list --outdated
-   ```
-
-## Installation
+### Installation
 
 1. Clone the repository:
    ```bash
    git clone <repository-url>
-   cd MCP_Network_automate
+   cd MCP_Network_automator
    ```
 
-2. Install dependencies using UV:
+2. Install project and dependencies:
    ```bash
-   # Install UV if not already installed
-   pip install uv
-   
-   # Set up virtual environment and install dependencies
    uv venv
    .venv\Scripts\activate
    uv pip install -e .
    ```
 
-3. Create a `.env` file with the following variables:
+### Claude Desktop Integration
+
+1. Install the MCP server to your Claude Desktop:
+   ```bash
+   mcp install mcp_server.py
    ```
-   CISCO_HOST=<your_cisco_device_ip>
-   CISCO_USERNAME=<your_cisco_username>
-   CISCO_PASSWORD=<your_cisco_password>
-   API_KEY=<your_api_key> # Don't use for this project
+
+2. Inspect your tool:
+   ```bash
+   mcp dev mcp_server.py
    ```
 
-## Components
+3. Configure Claude Desktop by adding this to your `claude_desktop_config.json`:
+   ```json
+   {
+     "mcpServers": {
+       "Cisco-IOS-config": {
+         "command": "uv",
+         "args": [
+           "run",
+           "--with",
+           "mcp[cli], netmiko",
+           "mcp",
+           "run",
+           "C:\\Users\\<your-username>\\Documents\\MCP_Network_automator\\mcp_server.py" 
+         ]
+       }
+     }
+   }
+   ```
+   Default location: `C:\Users\<your-username>\AppData\Roaming\Claude\claude_desktop_config.json`
 
-- `agent_client/agent_connector.py`: Core connector for Cisco device interaction, handling SSH connections and command execution
-- `mcp_server.py`: Server implementation for network automation tools
+## 🧰 Core Components
 
-## Example Commands
+- **agent_client/agent_connector.py**: Core connector for Cisco device interaction, handling SSH connections and command execution
+- **mcp_server.py**: MCP server implementation for network automation tools
 
-The system can process natural language requests like:
+## 💬 Example Usage
+
+The system processes natural language requests for network operations:
 
 ```
-Show the running interfaces on the router
+"Show the running interfaces on the router"
 
-Configure interface GigabitEthernet0/1 with IP 192.168.1.1/24
+"Configure interface GigabitEthernet0/1 with IP 192.168.1.1/24"
 
-Display the routing table
+"Display the routing table"
 
-Check the status of BGP neighbors
+"Check the status of BGP neighbors"
 ```
 
-## How It Works
+## 🔍 Technical Details
 
-The tool uses:
-- **Netmiko**: For SSH connections to Cisco devices
-- **Python-dotenv**: For environment variable management
-- **Large Language Models**: For understanding network engineering requests
+### Technology Stack
+
+- **Netmiko**: Powers SSH connections to Cisco devices
+- **Python-dotenv**: Manages environment variables and secrets
+- **Large Language Models**: Provide natural language understanding
+- **Pydantic**: Ensures data validation and settings management
+
+### Dependency Management
 
 ```bash
-#Install mcp server to your Claude Desktop
-mcp install mcp_server.py
+# Update all dependencies
+uv pip compile pyproject.toml -o requirements.txt
+uv pip sync requirements.txt
 
-#Inscpect your tool
-mcp dev mcp_server.py
+# Check for outdated packages
+uv pip list --outdated
 ```
 
-## Dependencies
+## 📦 Dependencies
 
-This project relies on several key Python packages:
-- netmiko: For network device connections
-- python-dotenv: For environment management
-- mistralai/openai: For AI capabilities
-- pydantic: For data validation
+- netmiko: Network device SSH connection management
+- python-dotenv: Environment variable management
+- mistralai/openai: AI capabilities
+- pydantic: Data validation and settings management
+- MCP: Model Context Protocol for Claude integration
 
-## License
+## 📄 License
 
 [Add your license information here]
 
-## Contributing
+## 👥 Contributing
 
 [Add contribution guidelines here]
+
+## 📞 Support
+
+For questions or issues, please [open an issue](https://github.com/yourusername/MCP_Network_automator/issues) on our GitHub repository.
 
