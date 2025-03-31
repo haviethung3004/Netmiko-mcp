@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO,
 
 class AgentClient:
 
-    def __init__(self, HOST, USERNAME, PASSWORD):
+    def __init__(self, HOST=None, USERNAME=None, PASSWORD=None):
         """
     
         Initialize the AgentClient with device credentials.
@@ -89,5 +89,3 @@ class AgentClient:
 if __name__ == "__main__":
     agent_client = AgentClient()
     connection = agent_client.send_command(command="show version")
-
-
