@@ -1,7 +1,5 @@
 # Cisco Network Automation Tool
 
-![Network Automation](image/image.png)
-
 A powerful, AI-assisted solution for automating Cisco network device configuration and management.
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
@@ -68,10 +66,14 @@ uv sync
    mcp install mcp_server.py
    ```
 
-2. Inspect your tool:
+2. Inspect your mcp server:
    ```bash
    mcp dev mcp_server.py
    ```
+!(image/image.png)
+
+   You can test if this tool work correctly or not.
+
 
 3. Configure Claude Desktop by adding this to your `claude_desktop_config.json`:
    ```json
@@ -85,7 +87,7 @@ uv sync
            "mcp[cli], netmiko",
            "mcp",
            "run",
-           "C:\\Users\\<your-username>\\Documents\\MCP_Network_automator\\mcp_server.py" 
+           "C:\\Users\\<your-username>\\Documents\\MCP_Network_automator\\mcp_server.py" #Choose correct your path
          ]
        }
      }
@@ -100,7 +102,15 @@ uv sync
 
 ## 💬 Example Usage
 
-The system processes natural language requests for network operations:
+For this example, we use Cisco Modeling Labs (CML) on Cisco Sandbox to manage multiple network devices:
+
+![CML Cisco Sandbox](image/CML_Cisco_Sandbox.png)
+
+The system processes natural language requests for network operations through Claude Desktop:
+
+![Claude Desktop Integration](image/Claude_Desktop.png)
+
+Example commands you can use:
 
 ```
 "Show the running interfaces on the router"
@@ -111,6 +121,12 @@ The system processes natural language requests for network operations:
 
 "Check the status of BGP neighbors"
 ```
+
+To use this tool, simply:
+1. Configure your Claude Desktop with the MCP server
+2. Open Claude Desktop and select the "Cisco-IOS-config" tool
+3. Provide the network device credentials when prompted
+4. Enter your network commands in natural language
 
 ## 🔍 Technical Details
 
