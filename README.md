@@ -70,7 +70,7 @@ uv sync
    ```bash
    mcp dev mcp_server.py
    ```
-!(image/image.png)
+   ![MCP Inspectation](image/image.png)
 
    You can test if this tool work correctly or not.
 
