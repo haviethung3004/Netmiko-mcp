@@ -157,14 +157,6 @@ uv pip list --outdated
 - pydantic: Data validation and settings management
 - MCP: Model Context Protocol for Claude integration
 
-## 📄 License
-
-[Add your license information here]
-
-## 👥 Contributing
-
-[Add contribution guidelines here]
-
 ## 📞 Support
 
 For questions or issues, please [open an issue](https://github.com/yourusername/MCP_Network_automator/issues) on our GitHub repository.
