@@ -21,12 +21,20 @@ class AgentClient:
         :param USERNAME: The username for the Cisco device.
         :param PASSWORD: The password for the Cisco device.
         """
-        self.device_info = {
+        self.device_info_cisco = {
             'device_type': 'cisco_ios',
             'host': HOST,
             'username': USERNAME,
             'password': PASSWORD,
         }
+
+        self.device_info_linux = {
+            'device_type': 'linux',
+            'host': HOST,
+            'username': USERNAME,
+            'password': PASSWORD,
+        }
+
 
         self.api_key = os.getenv("API_KEY")
         self.logger = logging.getLogger(__name__)
@@ -38,13 +46,13 @@ class AgentClient:
         :return: The output of the command.
         """
         try:
-            self.device_info['host'] = HOST
-            self.device_info['username'] = USERNAME
-            self.device_info['password'] = PASSWORD
+            self.device_info_cisco['host'] = HOST
+            self.device_info_cisco['username'] = USERNAME
+            self.device_info_cisco['password'] = PASSWORD
             
-            self.logger.info(f"Connecting to {self.device_info['host']} with provided credentials.")
-            with ConnectHandler(**self.device_info) as connection:
-                self.logger.info(f"Connected to {self.device_info['host']}")
+            self.logger.info(f"Connecting to {self.device_info_cisco['host']} with provided credentials.")
+            with ConnectHandler(**self.device_info_cisco) as connection:
+                self.logger.info(f"Connected to {self.device_info_cisco['host']}")
                 self.logger.info(f"Sending command: {command}")
 
                 output = connection.send_command(command)
@@ -55,7 +63,7 @@ class AgentClient:
                 return output
 
         except Exception as e:
-            self.logger.error(f"Failed to execute command '{command}' on {self.device_info['host']}: {e}")
+            self.logger.error(f"Failed to execute command '{command}' on {self.device_info_cisco['host']}: {e}")
             return None
 
     def config_command(self, commands, HOST, USERNAME, PASSWORD):
@@ -65,11 +73,11 @@ class AgentClient:
         :return: The output of the commands.
         """
         try:
-            self.device_info['host'] = HOST
-            self.device_info['username'] = USERNAME
-            self.device_info['password'] = PASSWORD
-            with ConnectHandler(**self.device_info) as connection:
-                self.logger.info(f"Connected to {self.device_info['host']}")
+            self.device_info_cisco['host'] = HOST
+            self.device_info_cisco['username'] = USERNAME
+            self.device_info_cisco['password'] = PASSWORD
+            with ConnectHandler(**self.device_info_cisco) as connection:
+                self.logger.info(f"Connected to {self.device_info_cisco['host']}")
                 self.logger.info(f"Applying configuration commands: {commands}")
 
                 # Enter enable mode
@@ -83,9 +91,40 @@ class AgentClient:
                 return output
 
         except Exception as e:
-            self.logger.error(f"Failed to apply configuration on {self.device_info['host']}: {e}")
+            self.logger.error(f"Failed to apply configuration on {self.device_info_cisco['host']}: {e}")
             return None
+        
+    def ssh_to_linux_device_and_send_command(self, commands, HOST, USERNAME, PASSWORD):
+        """
+        Establish an SSH connection to the Linux device.
+        :param HOST: The host of the Linux device.
+        :param USERNAME: The username for the Linux device.
+        :param PASSWORD: The password for the Linux device.
+        :return: The SSH connection object.
+        """
+        try:
+            self.device_info_linux['host'] = HOST
+            self.device_info_linux['username'] = USERNAME
+            self.device_info_linux['password'] = PASSWORD
+            
+            # Connect to the Linux device
+            self.logger.info(f"Connecting to Linux with host {self.device_info_linux['host']} with provided credentials.")
+            connection = ConnectHandler(**self.device_info_linux)
+            self.logger.info(f"Connected to {self.device_info_linux['host']}")
+
+            # Send command to the linux device
+            output = connection.send_config_set(commands)
+            self.logger.info(f"Command output: {output}")
+            
+            return output
+        except:
+            self.logger.error(f"Failed to connect to {self.device_info_linux['host']}")
+            return None
+        
+
     
+
+
 if __name__ == "__main__":
     agent_client = AgentClient()
-    connection = agent_client.send_command(command="show version")
+    connection = agent_client.ssh_to_linux_device_and_send_command(command="ls -la", HOST=192.168.1.11, USERNAME="root", PASSWORD="root")
