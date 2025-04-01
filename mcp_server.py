@@ -9,7 +9,7 @@ mcp = FastMCP("Cisco-IOS-config")
 cisco_agent = AgentClient()
 
 @mcp.tool()
-def config_command(command, HOST, USERNAME, PASSWORD) -> str:
+def config_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
     """
     Send config commands to cisco device and return the output, the input of this tool should a valid ios cisco command and will be a list
     :param config command: seperated by new line
@@ -21,7 +21,7 @@ def config_command(command, HOST, USERNAME, PASSWORD) -> str:
 
 
 @mcp.tool()
-def show_command(command, HOST, USERNAME, PASSWORD) -> str:
+def show_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
     """
     Send a 'show' command to the Cisco device and return the output.
     
@@ -38,6 +38,23 @@ def show_command(command, HOST, USERNAME, PASSWORD) -> str:
     print(f"Sending command: {command}")
     output = cisco_agent.show_command(command, HOST, USERNAME, PASSWORD)
     return output if output else "Failed to execute command."
+
+@mcp.tool()
+def send_linux_command(command, HOST, USERNAME, PASSWORD) -> str:
+    """
+    Send commands to Linux device and return device output.
+
+    Args:
+        command: A valid Linux command (e.g., "ls -l").
+        host: IP/DNS of the Linux device.
+        username: Username for authentication.
+        password: Password for authentication.
+    """
+    print(f"Sending command: {command}")
+    output = cisco_agent.ssh_to_linux_device_and_send_command(commands=command, HOST=HOST, USERNAME=USERNAME, PASSWORD=PASSWORD)
+    return output if output else "Failed to execute command."
+
+
 
 # Define a dynamic resource to list devices
 @mcp.resource("device://{list_device}")

@@ -82,6 +82,15 @@ class AgentClient:
 
                 # Enter enable mode
                 connection.enable()
+                            # Process commands properly based on type
+                if isinstance(commands, str):
+                    # Split string commands by newline
+                    commands = [command.strip() for command in commands.split("\n") if command.strip()]
+
+                commands = [command.strip() for command in commands if command.strip()]
+                if not commands:
+                    self.logger.warning("No valid commands provided.")
+                    return None
 
                 # Send configuration commands
                 output = connection.send_config_set(commands)
@@ -112,19 +121,22 @@ class AgentClient:
             connection = ConnectHandler(**self.device_info_linux)
             self.logger.info(f"Connected to {self.device_info_linux['host']}")
 
+            self.logger.info(f"Sending commands: {commands}")
+            
+            # Process commands properly based on type
+            if isinstance(commands, str):
+                # Split string commands by newline
+                commands = [command.strip() for command in commands.split("\n") if command.strip()]
+
             # Send command to the linux device
             output = connection.send_config_set(commands)
             self.logger.info(f"Command output: {output}")
             
             return output
-        except:
-            self.logger.error(f"Failed to connect to {self.device_info_linux['host']}")
+        except Exception as e:
+            self.logger.error(f"Failed to connect to {self.device_info_linux['host']}: {e}")
             return None
-        
-
-    
-
 
 if __name__ == "__main__":
     agent_client = AgentClient()
-    connection = agent_client.ssh_to_linux_device_and_send_command(command="ls -la", HOST=192.168.1.11, USERNAME="root", PASSWORD="root")
+    connection = agent_client.ssh_to_linux_device_and_send_command(commands=["ls \nls"], HOST="172.168.1.11", USERNAME="root", PASSWORD="root")
