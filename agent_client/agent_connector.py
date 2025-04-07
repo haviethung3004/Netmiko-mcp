@@ -55,7 +55,7 @@ class AgentClient:
                 self.logger.info(f"Connected to {self.device_info_cisco['host']}")
                 self.logger.info(f"Sending command: {command}")
 
-                output = connection.send_command(command)
+                output = connection.send_command(command, read_timeout=20)
                 self.logger.debug("Command output:")
                 for line in output.splitlines():
                     self.logger.debug(line)
@@ -135,7 +135,7 @@ class AgentClient:
                 commands = [command.strip() for command in commands.split("\n") if command.strip()]
 
             # Send command to the linux device
-            output = connection.send_config_set(commands)
+            output = connection.send_config_set(commands,  read_timeout=20)
             self.logger.info(f"Command output: {output}")
             
             
