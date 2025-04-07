@@ -51,9 +51,19 @@ def send_linux_command(command, HOST, USERNAME, PASSWORD) -> str:
         password: Password for authentication.
     """
     print(f"Sending command: {command}")
-    output = cisco_agent.ssh_to_linux_device_and_send_command(commands=command, HOST=HOST, USERNAME=USERNAME, PASSWORD=PASSWORD)
+    output = cisco_agent.linux_command(commands=command, HOST=HOST, USERNAME=USERNAME, PASSWORD=PASSWORD)
     return output if output else "Failed to execute command."
 
+
+@mcp.tool()
+def ping_cisco_device(command, HOST, USERNAME, PASSOWORD) -> str:
+    """
+    Send a ping command to the Cisco device and return the output.
+    The input should valid  ios ping cisco command with the "ping" keyword.
+    """
+    print(f"Sending command: {command}")
+    output = cisco_agent.ping_cisco_command(command, HOST, USERNAME, PASSOWORD)
+    return output if output else "Failed to execute command."
 
 
 # Define a dynamic resource to list devices

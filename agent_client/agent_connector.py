@@ -60,6 +60,9 @@ class AgentClient:
                 for line in output.splitlines():
                     self.logger.debug(line)
 
+                connection.disconnect()
+                self.logger.info(f"Disconnected from {self.device_info_linux['host']}")
+
                 return output
 
         except Exception as e:
@@ -97,13 +100,16 @@ class AgentClient:
                 self.logger.info("Configuration applied successfully.")
                 self.logger.debug(f"Configuration output: {output}")
 
+                connection.disconnect()
+                self.logger.info(f"Disconnected from {self.device_info_linux['host']}")
+
                 return output
 
         except Exception as e:
             self.logger.error(f"Failed to apply configuration on {self.device_info_cisco['host']}: {e}")
             return None
         
-    def ssh_to_linux_device_and_send_command(self, commands, HOST, USERNAME, PASSWORD):
+    def linux_command(self, commands, HOST, USERNAME, PASSWORD):
         """
         Establish an SSH connection to the Linux device.
         :param HOST: The host of the Linux device.
@@ -132,9 +138,33 @@ class AgentClient:
             output = connection.send_config_set(commands)
             self.logger.info(f"Command output: {output}")
             
+            
             return output
         except Exception as e:
             self.logger.error(f"Failed to connect to {self.device_info_linux['host']}: {e}")
+            return None
+
+    def ping_cisco_command(self, command, HOST, USERNAME, PASSWORD):
+        """
+        Send ping commands to Cisco device and return the output with wait time.
+        """
+        try:
+            if not command.startswith("ping"):
+                return "Invalid command. Please use 'ping' command."
+            self.device_info_cisco['host'] = HOST
+            self.device_info_cisco['username'] = USERNAME
+            self.device_info_cisco['password'] = PASSWORD
+            with ConnectHandler(**self.device_info_cisco) as connection:
+                self.logger.info(f"Connected to {self.device_info_cisco['host']}")
+                self.logger.info(f"Sending ping command: {command}")
+
+                # Send ping command
+                output = connection.send_command(command, expect_string=r"#")
+                self.logger.info(f"Ping command output: {output}")
+                
+                return output
+        except Exception as e:
+            self.logger.error(f"Failed to execute ping command '{command}' on {self.device_info_cisco['host']}: {e}")
             return None
 
 if __name__ == "__main__":
