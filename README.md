@@ -19,7 +19,7 @@ This enterprise-grade application provides a sophisticated interface for interac
 
 ## 🔧 System Requirements
 
-- Python 3.13 or higher
+- Python 3.10 or higher
 - Cisco network device(s) accessible via SSH or you can use (CML Cisco sandbox)
 - Windows/Linux/macOS compatible
 
