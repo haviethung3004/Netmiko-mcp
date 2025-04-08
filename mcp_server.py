@@ -87,7 +87,6 @@ def get_device(list_device):
     Returns:
         str: Output of the command execution.
     """
-    print(f"Fetching information for device(s): {list_device}")
     return {"device": list_device}
 
 
