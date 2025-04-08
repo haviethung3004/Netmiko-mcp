@@ -15,10 +15,11 @@ def config_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
     :param config command: seperated by new line
     :return: The output of the command. 
     """
-    print(f"Sending command: {command}")
-    output = cisco_agent.config_command(command, HOST, USERNAME, PASSWORD)
-    return output if output else "Failed to execute command."
-
+    try:
+        output = cisco_agent.config_command(command, HOST, USERNAME, PASSWORD)
+        return output
+    except Exception as e:
+        return f"Error: {e}"
 
 @mcp.tool()
 def show_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
@@ -34,10 +35,11 @@ def show_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
     Returns:
         str: Output of the command execution.
     """
-
-    print(f"Sending command: {command}")
-    output = cisco_agent.show_command(command, HOST, USERNAME, PASSWORD)
-    return output if output else "Failed to execute command."
+    try:
+        output = cisco_agent.show_command(command, HOST, USERNAME, PASSWORD)
+        return output
+    except Exception as e:
+        return f"Error: {e}"
 
 @mcp.tool()
 def send_linux_command(command, HOST, USERNAME, PASSWORD) -> str:
@@ -50,21 +52,25 @@ def send_linux_command(command, HOST, USERNAME, PASSWORD) -> str:
         username: Username for authentication.
         password: Password for authentication.
     """
-    print(f"Sending command: {command}")
-    output = cisco_agent.linux_command(commands=command, HOST=HOST, USERNAME=USERNAME, PASSWORD=PASSWORD)
-    return output if output else "Failed to execute command."
+    try:
+        output = cisco_agent.linux_command(commands=command, HOST=HOST, USERNAME=USERNAME, PASSWORD=PASSWORD)
+        return output
+    except Exception as e:
+        return f"Error: {e}"
 
 
 @mcp.tool()
-def ping_cisco_device(command, HOST, USERNAME, PASSOWORD) -> str:
+def ping_cisco_device(command, HOST, USERNAME, PASSWORD) -> str:
     """
     Send a ping command to the Cisco device and return the output.
     The input should valid  ios ping cisco command with the "ping" keyword.
     """
-    print(f"Sending command: {command}")
-    output = cisco_agent.ping_cisco_command(command, HOST, USERNAME, PASSOWORD)
-    return output if output else "Failed to execute command."
-
+    try:
+        output = cisco_agent.ping_cisco_command(command, HOST, USERNAME, PASSWORD)
+        return output
+    except Exception as e:
+        return f"Error: {e}"
+    
 
 # Define a dynamic resource to list devices
 @mcp.resource("device://{list_device}")

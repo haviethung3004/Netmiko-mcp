@@ -1,4 +1,5 @@
 from netmiko import ConnectHandler
+from netmiko.exceptions import NetmikoTimeoutException, NetmikoAuthenticationException
 from dotenv import load_dotenv, find_dotenv
 import os
 import logging
@@ -65,9 +66,12 @@ class AgentClient:
 
                 return output
 
-        except Exception as e:
-            self.logger.error(f"Failed to execute command '{command}' on {self.device_info_cisco['host']}: {e}")
-            return None
+        except NetmikoTimeoutException as e:
+            self.logger.error(f"Timeout error while executing command '{command}' on {self.device_info_cisco['host']}: {e}")
+            return "Timeout error"
+        except NetmikoAuthenticationException as e:
+            self.logger.error(f"Authentication error while executing command '{command}' on {self.device_info_cisco['host']}: {e}")
+            return "Authentication error"
 
     def config_command(self, commands, HOST, USERNAME, PASSWORD):
         """
@@ -105,14 +109,17 @@ class AgentClient:
 
                 return output
 
-        except Exception as e:
-            self.logger.error(f"Failed to apply configuration on {self.device_info_cisco['host']}: {e}")
-            return None
+        except NetmikoTimeoutException as e:
+            self.logger.error(f"Timeout error while executing command '{commands}' on {self.device_info_cisco['host']}: {e}")
+            return "Timeout error"
+        except NetmikoAuthenticationException as e:
+            self.logger.error(f"Authentication error while executing command '{commands}' on {self.device_info_cisco['host']}: {e}")
+            return "Authentication error"
         
     def linux_command(self, commands, HOST, USERNAME, PASSWORD):
         """
         Establish an SSH connection to the Linux device.
-        :param HOST: The host of the Linux device.
+        :param HOST: The host of the Linux device.s
         :param USERNAME: The username for the Linux device.
         :param PASSWORD: The password for the Linux device.
         :return: The SSH connection object.
@@ -147,6 +154,8 @@ class AgentClient:
     def ping_cisco_command(self, command, HOST, USERNAME, PASSWORD):
         """
         Send ping commands to Cisco device and return the output with wait time.
+        The input should start with "ping" and be followed by the IP address.
+        :param command: The ping command to be executed on the device.
         """
         try:
             if not command.startswith("ping"):
@@ -159,13 +168,17 @@ class AgentClient:
                 self.logger.info(f"Sending ping command: {command}")
 
                 # Send ping command
-                output = connection.send_command(command, expect_string=r"#")
-                self.logger.info(f"Ping command output: {output}")
-                
-                return output
-        except Exception as e:
-            self.logger.error(f"Failed to execute ping command '{command}' on {self.device_info_cisco['host']}: {e}")
-            return None
+                output = connection.send_command(command, read_timeout=30, expect_string=r"#", strip_prompt=False, strip_command=False)
+                if "!" in output:
+                    return output
+                else:
+                    return "Ping failed. No response received."
+        except NetmikoTimeoutException as e:
+            self.logger.error(f"Timeout error while executing command '{command}' on {self.device_info_cisco['host']}: {e}")
+            return "Timeout error"
+        except NetmikoAuthenticationException as e:
+            self.logger.error(f"Authentication error while executing command '{command}' on {self.device_info_cisco['host']}: {e}")
+            return "Authentication error"
 
 if __name__ == "__main__":
     agent_client = AgentClient()
