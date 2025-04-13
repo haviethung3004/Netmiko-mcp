@@ -55,24 +55,6 @@ def ping_cisco_device(command, HOST, USERNAME, PASSWORD) -> str:
         return f"Error: {e}"
     
 
-# Define a dynamic resource to list devices
-@mcp.resource("device://{list_device}")
-def get_device(list_device):
-    """
-    Send configuration commands to a Cisco device and return the output.
-    
-    Args:
-        commands: List of valid Cisco IOS configuration commands.
-        host: IP/DNS of the Cisco device.
-        username: Username for authentication.
-        password: Password for authentication.
-    
-    Returns:
-        str: Output of the command execution.
-    """
-    return {"device": list_device}
-
-
 if __name__ == "__main__":
     # Start the MCP server
     mcp.run(transport='stdio')
