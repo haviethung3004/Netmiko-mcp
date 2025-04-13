@@ -1,6 +1,6 @@
 from langgraph.prebuilt import create_react_agent
 from langchain_mistralai import ChatMistralAI
-from agent_client.agent_connector import AgentClient
+from agent_client.cisco_agent import AgentCiscoClient
 from langchain.tools import tool
 from langchain.prompts import PromptTemplate
 
@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 # Initialize the agent client and model
-cisco_agent = AgentClient()
+cisco_agent = AgentCiscoClient()
 model = ChatMistralAI(api_key=cisco_agent.api_key, model="mistral-large-2411")
 
 

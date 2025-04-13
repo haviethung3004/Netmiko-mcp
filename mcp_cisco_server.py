@@ -1,12 +1,12 @@
 from mcp.server.fastmcp import FastMCP
-from agent_client.agent_connector import AgentClient
-from typing import List
+from agent_client.cisco_agent import AgentCiscoClient
+# from typing import List
 
 
 #Create an MCP server
 mcp = FastMCP("Cisco-IOS-config")
 
-cisco_agent = AgentClient()
+cisco_agent = AgentCiscoClient()
 
 @mcp.tool()
 def config_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
@@ -37,23 +37,6 @@ def show_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
     """
     try:
         output = cisco_agent.show_command(command, HOST, USERNAME, PASSWORD)
-        return output
-    except Exception as e:
-        return f"Error: {e}"
-
-@mcp.tool()
-def send_linux_command(command, HOST, USERNAME, PASSWORD) -> str:
-    """
-    Send commands to Linux device and return device output.
-
-    Args:
-        command: A valid Linux command (e.g., "ls -l").
-        host: IP/DNS of the Linux device.
-        username: Username for authentication.
-        password: Password for authentication.
-    """
-    try:
-        output = cisco_agent.linux_command(commands=command, HOST=HOST, USERNAME=USERNAME, PASSWORD=PASSWORD)
         return output
     except Exception as e:
         return f"Error: {e}"

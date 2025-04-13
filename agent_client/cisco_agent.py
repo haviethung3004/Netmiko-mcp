@@ -12,7 +12,7 @@ load_dotenv(find_dotenv(), override=True)
 logging.basicConfig(level=logging.INFO, 
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
-class AgentClient:
+class AgentCiscoClient:
 
     def __init__(self, HOST=None, USERNAME=None, PASSWORD=None):
         """
@@ -116,41 +116,6 @@ class AgentClient:
             self.logger.error(f"Authentication error while executing command '{commands}' on {self.device_info_cisco['host']}: {e}")
             return "Authentication error"
         
-    def linux_command(self, commands, HOST, USERNAME, PASSWORD):
-        """
-        Establish an SSH connection to the Linux device.
-        :param HOST: The host of the Linux device.s
-        :param USERNAME: The username for the Linux device.
-        :param PASSWORD: The password for the Linux device.
-        :return: The SSH connection object.
-        """
-        try:
-            self.device_info_linux['host'] = HOST
-            self.device_info_linux['username'] = USERNAME
-            self.device_info_linux['password'] = PASSWORD
-            
-            # Connect to the Linux device
-            self.logger.info(f"Connecting to Linux with host {self.device_info_linux['host']} with provided credentials.")
-            connection = ConnectHandler(**self.device_info_linux)
-            self.logger.info(f"Connected to {self.device_info_linux['host']}")
-
-            self.logger.info(f"Sending commands: {commands}")
-            
-            # Process commands properly based on type
-            if isinstance(commands, str):
-                # Split string commands by newline
-                commands = [command.strip() for command in commands.split("\n") if command.strip()]
-
-            # Send command to the linux device
-            output = connection.send_config_set(commands,  read_timeout=20)
-            self.logger.info(f"Command output: {output}")
-            
-            
-            return output
-        except Exception as e:
-            self.logger.error(f"Failed to connect to {self.device_info_linux['host']}: {e}")
-            return None
-
     def ping_cisco_command(self, command, HOST, USERNAME, PASSWORD):
         """
         Send ping commands to Cisco device and return the output with wait time.
@@ -181,5 +146,5 @@ class AgentClient:
             return "Authentication error"
 
 if __name__ == "__main__":
-    agent_client = AgentClient()
+    agent_client = AgentCiscoClient()
     connection = agent_client.ssh_to_linux_device_and_send_command(commands=["ls \nls"], HOST="172.168.1.11", USERNAME="root", PASSWORD="root")
