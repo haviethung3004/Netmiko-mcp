@@ -2,8 +2,10 @@ import asyncio
 from mcp.server.fastmcp import FastMCP
 from agent_client.cisco_agent import AgentCiscoClient
 
-# Create MCP server with debug mode
-mcp = FastMCP(name="Cisco-IOS-config", debug=True, log_level="DEBUG")
+# Create MCP server
+mcp = FastMCP(name="Cisco-IOS-config", instructions="""
+            You are an expert network engineer. You have access to a Cisco device.""",
+            debug=True, log_level="DEBUG")
 
 cisco_agent = AgentCiscoClient()
 
@@ -32,7 +34,6 @@ async def config_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
 async def show_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
     """
     Send a 'show' command to the Cisco device and return the output.
-    Don't use "traceroute" or ping commands in this tool
     Args:
         command: A valid Cisco IOS 'show' command (e.g., "show running-config").
         host: IP/DNS of the Cisco device.
