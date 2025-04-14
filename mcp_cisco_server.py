@@ -12,6 +12,8 @@ cisco_agent = AgentCiscoClient()
 def config_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
     """
     Send config commands to cisco device and return the output, the input of this tool should a valid ios cisco command and will be a list
+    You don't need to add the "conf t" command in the input, it will be added automatically.
+    Args:
     :param config command: seperated by new line
     :return: The output of the command. 
     """
@@ -25,7 +27,7 @@ def config_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
 def show_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
     """
     Send a 'show' command to the Cisco device and return the output.
-    
+    Don't use "traceroute" or ping commands in this tool
     Args:
         command: A valid Cisco IOS 'show' command (e.g., "show running-config").
         host: IP/DNS of the Cisco device.
