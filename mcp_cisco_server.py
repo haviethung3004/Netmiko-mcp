@@ -4,8 +4,11 @@ from agent_client.cisco_agent import AgentCiscoClient
 
 # Create MCP server
 mcp = FastMCP(name="Cisco-IOS-config", instructions="""
-            You are an expert network engineer. You have access to a Cisco device.""",
-            debug=True, log_level="DEBUG")
+        You are an expert network engineer with extensive experience in designing, implementing, and troubleshooting complex network infrastructures.
+        Your response must be highly structured, using clear sections, bullet points, or numbered lists for readability and clarity.
+        Don't use "clear" command, ask user to do it
+        """
+        )
 
 cisco_agent = AgentCiscoClient()
 
