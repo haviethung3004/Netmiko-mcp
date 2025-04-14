@@ -1,30 +1,35 @@
+import asyncio
 from mcp.server.fastmcp import FastMCP
 from agent_client.cisco_agent import AgentCiscoClient
-# from typing import List
 
-
-#Create an MCP server
-mcp = FastMCP("Cisco-IOS-config")
+# Create MCP server with debug mode
+mcp = FastMCP(name="Cisco-IOS-config", debug=True, log_level="DEBUG")
 
 cisco_agent = AgentCiscoClient()
 
 @mcp.tool()
-def config_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
+async def config_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
     """
     Send config commands to cisco device and return the output, the input of this tool should a valid ios cisco command and will be a list
     You don't need to add the "conf t" command in the input, it will be added automatically.
     Args:
-    :param config command: seperated by new line
+    :param config command: separated by new line
     :return: The output of the command. 
     """
     try:
-        output = cisco_agent.config_command(command, HOST, USERNAME, PASSWORD)
+        # Run in thread with timeout to prevent blocking
+        output = await asyncio.wait_for(
+            asyncio.to_thread(cisco_agent.config_command, command, HOST, USERNAME, PASSWORD),
+            timeout=30.0
+        )
         return output
+    except asyncio.TimeoutError:
+        return "Error: Command timed out"
     except Exception as e:
         return f"Error: {e}"
 
 @mcp.tool()
-def show_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
+async def show_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
     """
     Send a 'show' command to the Cisco device and return the output.
     Don't use "traceroute" or ping commands in this tool
@@ -38,25 +43,32 @@ def show_cisco_command(command, HOST, USERNAME, PASSWORD) -> str:
         str: Output of the command execution.
     """
     try:
-        output = cisco_agent.show_command(command, HOST, USERNAME, PASSWORD)
+        output = await asyncio.wait_for(
+            asyncio.to_thread(cisco_agent.show_command, command, HOST, USERNAME, PASSWORD),
+            timeout=30.0
+        )
         return output
+    except asyncio.TimeoutError:
+        return "Error: Command timed out"
     except Exception as e:
         return f"Error: {e}"
-
 
 @mcp.tool()
-def ping_cisco_device(command, HOST, USERNAME, PASSWORD) -> str:
+async def ping_cisco_device(command, HOST, USERNAME, PASSWORD) -> str:
     """
     Send a ping command to the Cisco device and return the output.
-    The input should valid  ios ping cisco command with the "ping" keyword.
+    The input should valid ios ping cisco command with the "ping" keyword.
     """
     try:
-        output = cisco_agent.ping_cisco_command(command, HOST, USERNAME, PASSWORD)
+        output = await asyncio.wait_for(
+            asyncio.to_thread(cisco_agent.ping_cisco_command, command, HOST, USERNAME, PASSWORD),
+            timeout=30.0
+        )
         return output
+    except asyncio.TimeoutError:
+        return "Error: Command timed out"
     except Exception as e:
         return f"Error: {e}"
-    
 
 if __name__ == "__main__":
-    # Start the MCP server
-    mcp.run(transport='stdio')
+    mcp.run(transport="stdio")
