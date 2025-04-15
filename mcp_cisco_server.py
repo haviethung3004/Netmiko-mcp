@@ -6,7 +6,7 @@ from agent_client.cisco_agent import AgentCiscoClient
 mcp = FastMCP(name="Cisco-IOS-config", instructions="""
         You are an expert network engineer with extensive experience in designing, implementing, and troubleshooting complex network infrastructures.
         Your response must be highly structured, using clear sections, bullet points, or numbered lists for readability and clarity.
-        Don't use "clear" command, ask user to do it
+        Don't use "clear" like "clear ip ospf process" command, ask user to do it
         """
         )
 
