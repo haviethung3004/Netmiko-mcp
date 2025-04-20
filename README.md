@@ -1,26 +1,26 @@
-# Cisco Network Automation Tool
+# MCP Network Automator
 
-A powerful, AI-assisted solution for automating Cisco network device configuration and management.
+A powerful, AI-assisted solution for automating Cisco network device configuration and management using Model Context Protocol (MCP).
 
-[![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ## 📋 Overview
 
-This enterprise-grade application provides a sophisticated interface for interacting with Cisco network devices through an AI-powered automation layer. It streamlines network management by enabling both monitoring (show commands) and configuration changes with natural language processing capabilities.
+This application provides a sophisticated interface for interacting with Cisco network devices through an AI-powered automation layer. It leverages Claude AI's capabilities via the Model Context Protocol (MCP) to enable network engineers to manage Cisco devices with natural language processing.
 
 ## ✨ Key Features
 
-- **Command Execution**: Execute show commands on Cisco devices with simplified syntax
+- **Show Command Execution**: Execute show commands on Cisco devices with simplified syntax
 - **Configuration Management**: Apply configuration changes to network devices safely
+- **Ping Testing**: Perform network connectivity tests using Cisco ping commands
 - **Natural Language Processing**: Interpret network commands through conversational language
-- **Streamlined Workflows**: Simplify complex network management tasks
 - **Claude Integration**: Works as an MCP extension for Claude Desktop
 
 ## 🔧 System Requirements
 
 - Python 3.10 or higher
-- Cisco network device(s) accessible via SSH or you can use (CML Cisco sandbox)
+- Cisco network device(s) accessible via SSH or you can use CML Cisco sandbox
 - Windows/Linux/macOS compatible
 
 ## 🚀 Quick Start
@@ -62,17 +62,16 @@ uv sync
 
 1. Install the MCP server to your Claude Desktop:
    ```bash
-   mcp install mcp_server.py
+   mcp install mcp_cisco_server.py
    ```
 
 2. Inspect your mcp server:
    ```bash
-   mcp dev mcp_server.py
+   mcp dev mcp_cisco_server.py
    ```
-   ![MCP Inspectation](image/image.png)
+   ![MCP Inspection](image/image.png)
 
-   You can test if this tool work correctly or not.
-
+   You can test if this tool works correctly or not.
 
 3. Configure Claude Desktop by adding this to your `claude_desktop_config.json`:
    ```json
@@ -86,7 +85,7 @@ uv sync
            "mcp[cli], netmiko",
            "mcp",
            "run",
-           "C:\\Users\\<your-username>\\Documents\\MCP_Network_automator\\mcp_server.py" #Choose correct your path
+           "C:\\Users\\<your-username>\\Documents\\MCP_Network_automator\\mcp_cisco_server.py" #Choose correct your path
          ]
        }
      }
@@ -96,8 +95,22 @@ uv sync
 
 ## 🧰 Core Components
 
-- **agent_client/agent_connector.py**: Core connector for Cisco device interaction, handling SSH connections and command execution
-- **mcp_server.py**: MCP server implementation for network automation tools
+- **mcp_cisco_server.py**: Main MCP server implementation for Cisco network automation tools
+- **agent_client/cisco_agent.py**: Core connector for Cisco device interaction, handling SSH connections and command execution
+
+## 🔧 Available Tools
+
+The MCP Network Automator provides three main tools:
+
+1. **show_cisco_command**: Execute show commands on Cisco devices
+   - Examples: "show running-config", "show interfaces", "show ip route"
+
+2. **config_cisco_command**: Apply configuration changes to Cisco devices
+   - Automatically enters configuration mode
+   - Handles multi-line configuration commands
+
+3. **ping_cisco_device**: Test network connectivity from Cisco devices
+   - Executes ping commands to verify network reachability
 
 ## 💬 Example Usage
 
@@ -105,7 +118,7 @@ For this example, we use Cisco Modeling Labs (CML) on Cisco Sandbox to manage mu
 
 ![CML Cisco Sandbox](image/CML_Cisco_Sandbox.png)
 
-This case for SSH, so you need configure SSH for every device, by default, this device use telnet
+This case is for SSH, so you need to configure SSH for every device. By default, these devices use telnet.
 
 The system processes natural language requests for network operations through Claude Desktop:
 
@@ -114,19 +127,19 @@ The system processes natural language requests for network operations through Cl
 Example commands you can use:
 
 ```
-"Show the running interfaces on the router R1 and R2"
+"Show the running interfaces on the router R1"
 
 "Configure interface GigabitEthernet0/1 with IP 192.168.1.1/24"
 
 "Display the routing table"
 
-"Check the status of BGP neighbors"
+"Ping 8.8.8.8 from router R1"
 ```
 
 To use this tool, simply:
 1. Configure your Claude Desktop with the MCP server
 2. Open Claude Desktop and select the "Cisco-IOS-config" tool
-3. Provide the network device credentials when prompted
+3. Provide the network device credentials when prompted (HOST, USERNAME, PASSWORD)
 4. Enter your network commands in natural language
 
 ## 🔍 Technical Details
@@ -134,9 +147,9 @@ To use this tool, simply:
 ### Technology Stack
 
 - **Netmiko**: Powers SSH connections to Cisco devices
+- **MCP**: Model Context Protocol for Claude integration
 - **Python-dotenv**: Manages environment variables and secrets
-- **Large Language Models**: Provide natural language understanding
-- **Pydantic**: Ensures data validation and settings management
+- **FastMCP**: Provides the MCP server implementation
 
 ### Dependency Management
 
@@ -151,13 +164,12 @@ uv pip list --outdated
 
 ## 📦 Dependencies
 
+Primary dependencies include:
 - netmiko: Network device SSH connection management
 - python-dotenv: Environment variable management
-- mistralai/openai: AI capabilities
-- pydantic: Data validation and settings management
-- MCP: Model Context Protocol for Claude integration
+- mcp: Model Context Protocol for Claude integration
 
 ## 📞 Support
 
-For questions or issues, please [open an issue](https://github.com/yourusername/MCP_Network_automator/issues) on our GitHub repository.
+For questions or issues, please open an issue on our GitHub repository.
 
