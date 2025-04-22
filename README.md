@@ -45,3 +45,24 @@ pip install netmiko
 
 # B3. Chạy chương trình
 python run_agent.py
+Bạn sẽ thấy giao diện chọn số xuất hiện:
+🔥 Chọn chế độ hoạt động:
+1. AI Local (Ollama)
+2. Google Gemini
+3. Rule Matching (không dùng AI)
+> Nhập số:
+
+
+🐳 Docker hỗ trợ đầy đủ:
+Python 3.10+
+
+pyATS, Netmiko, Unicon
+
+Langchain, Gemini SDK, Requests
+
+Ollama CLI (tùy chọn cài nếu dùng local)
+# Build Docker Image
+docker build -t ai-network-automator .
+
+# Chạy interactive
+docker run -it --env-file .env ai-network-automator
