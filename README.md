@@ -67,20 +67,20 @@ docker build -t ai-network-automator .
 # Chạy interactive
 docker run -it --env-file .env ai-network-automator
 ============================================================================================
- TỔNG QUAN NÂNG CẤP (trên nền MCP_Network_automator gốc)
+🚀 TỔNG QUAN NÂNG CẤP (trên nền MCP_Network_automator gốc)
 
-Thành phần	Nâng cấp chi tiết
-🧠 Tích hợp AI đa chế độ: Cho phép chọn giữa 3 chế độ AI khi chạy:
--> AI Local (Ollama Mistral)
--> AI Cloud (Gemini API)
--> Rule Matching (nội suy đơn giản không cần AI)
-🧱 Giữ nguyên cấu trúc cũ: Mọi thư mục và phân chia như agent_local, agent_cloud, core, logger, config được giữ nguyên nhưng có bổ sung logic mới
-🖥️ Cải tiến CLI dễ dùng: Giao diện dòng lệnh với menu chọn số 1 / 2 / 3 giúp chọn chế độ AI dễ dàng
-⚙️ Xử lý lệnh mạng thực: Trong core/executor.py, lệnh OSPF, show ip ospf neighbor, ping, NAT... được gửi bằng Netmiko
-📡 Kết nối nhiều thiết bị: Cho phép gửi cấu hình qua nhiều thiết bị định nghĩa trong config/devices_config.py
-🧪 Tự kiểm tra lỗi cấu hình: Nếu OSPF neighbor chưa "FULL", sẽ tự động ping kiểm tra lại kết nối
-📁 Tự ghi log cấu hình: Kết quả được in ra màn hình và có thể lưu log (logger/print_log.py)
-🧩 Tùy chọn AI Local: Có thể chạy mà không cần mạng nếu dùng --mode ollama (khi cài Mistral qua Ollama)
+
+🧠 Tích hợp AI đa chế độ	Cho phép chọn giữa 3 chế độ AI khi chạy:
+① AI Local (Ollama Mistral)
+② AI Cloud (Gemini API)
+③ Rule Matching (nội suy đơn giản không cần AI)
+🧱 Giữ nguyên cấu trúc cũ	Mọi thư mục và phân chia như agent_local, agent_cloud, core, logger, config được giữ nguyên nhưng có bổ sung logic mới
+🖥️ Cải tiến CLI dễ dùng	Giao diện dòng lệnh với menu chọn số 1 / 2 / 3 giúp chọn chế độ AI dễ dàng
+⚙️ Xử lý lệnh mạng thực	Trong core/executor.py, lệnh OSPF, show ip ospf neighbor, ping, NAT... được gửi bằng Netmiko
+📡 Kết nối nhiều thiết bị	Cho phép gửi cấu hình qua nhiều thiết bị định nghĩa trong config/devices_config.py
+🧪 Tự kiểm tra lỗi cấu hình	Nếu OSPF neighbor chưa "FULL", sẽ tự động ping kiểm tra lại kết nối
+📁 Tự ghi log cấu hình	Kết quả được in ra màn hình và có thể lưu log (logger/print_log.py)
+🧩 Tùy chọn AI Local	Có thể chạy mà không cần mạng nếu dùng --mode ollama (khi cài Mistral qua Ollama)
 🔐 Tùy chọn AI Gemini API	Nếu dùng Google Gemini thì chỉ cần đặt key trong .env
-🐳 Chuẩn bị Dockerfile & cấu trúc build: Đã hỗ trợ project chạy được trong Docker (bản nâng cao sẽ cập nhật thêm pyATS sau)
-📦 requirements.txt & khởi tạo môi trường: Có đầy đủ hướng dẫn tạo venv, requirements.txt, khởi chạy đúng cách
+🐳 Chuẩn bị Dockerfile & cấu trúc build	Đã hỗ trợ project chạy được trong Docker (bản nâng cao sẽ cập nhật thêm pyATS sau)
+📦 requirements.txt & khởi tạo môi trường	Có đầy đủ hướng dẫn tạo venv, requirements.txt, khởi chạy đúng cách
