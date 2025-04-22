@@ -35,3 +35,13 @@ Chọn `--mode`:
 - `ollama`: Dùng AI local Mistral
 - `gemini`: Dùng Google Gemini (nhập API key vào `.env`)
 - `rule`: Không AI, chỉ rule đơn giản
+test
+# B1. Tạo môi trường ảo
+python -m venv venv
+venv\Scripts\activate
+
+# B2. Cài thư viện
+pip install netmiko
+
+# B3. Chạy chương trình
+python run_agent.py
