@@ -1,0 +1,6 @@
+
+FROM python:3.10
+WORKDIR /app
+COPY . .
+RUN pip install --no-cache-dir -r requirements.txt || true
+CMD ["python", "run_agent.py"]
