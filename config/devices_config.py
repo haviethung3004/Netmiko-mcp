@@ -4,6 +4,6 @@ USING_DEVICES = [
         "host": "192.168.88.1",
         "username": "admin",
         "password": "cisco",
-        "secret": "cisco",
+        "secret": "cisco"
     }
 ]

@@ -15,6 +15,10 @@ def execute_plan(steps, devices):
                 elif "show ip ospf neighbor" in step:
                     output = conn.send_command("show ip ospf neighbor")
                     logs.append(f"[{device['host']}] 👁️ Neighbor:\n{output}")
+                    if "FULL" not in output:
+                        logs.append(f"[{device['host']}] ⚠️ Neighbor chưa FULL, thử ping...")
+                        ping = conn.send_command("ping 192.168.0.2")
+                        logs.append(f"[{device['host']}] 📡 Ping:\n{ping}")
                 elif "ping" in step:
                     output = conn.send_command("ping 192.168.0.2")
                     logs.append(f"[{device['host']}] 📡 Ping:\n{output}")

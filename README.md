@@ -16,3 +16,22 @@ python run_agent.py
 - Sinh kế hoạch hành động
 - Cấu hình OSPF, NAT, VLAN thật bằng Netmiko
 - Log từng bước thực thi
+
+# AI Network Agent - Phiên bản nâng cấp
+
+## Tính năng:
+✅ AI reasoning: Gemini, Ollama local, fallback rule  
+✅ Kết nối nhiều thiết bị (Netmiko)  
+✅ Tự sửa lỗi nếu ping/neighbor fail  
+✅ Giao diện CLI gọn nhẹ  
+✅ Log từng bước thực hiện
+
+## Cách chạy:
+```bash
+pip install -r requirements.txt
+python run_agent.py --mode ollama
+```
+Chọn `--mode`:
+- `ollama`: Dùng AI local Mistral
+- `gemini`: Dùng Google Gemini (nhập API key vào `.env`)
+- `rule`: Không AI, chỉ rule đơn giản
