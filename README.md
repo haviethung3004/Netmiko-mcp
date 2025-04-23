@@ -84,3 +84,23 @@ docker run -it --env-file .env ai-network-automator
 🔐 Tùy chọn AI Gemini API	Nếu dùng Google Gemini thì chỉ cần đặt key trong .env
 🐳 Chuẩn bị Dockerfile & cấu trúc build	Đã hỗ trợ project chạy được trong Docker (bản nâng cao sẽ cập nhật thêm pyATS sau)
 📦 requirements.txt & khởi tạo môi trường	Có đầy đủ hướng dẫn tạo venv, requirements.txt, khởi chạy đúng cách
+# AI Network Engineer Agent (Final Build)
+
+## Hướng dẫn chạy
+
+1. Cài đặt môi trường:
+```
+python -m venv venv
+source venv/bin/activate  # hoặc .\venv\Scripts\activate trên Windows
+pip install -r requirements.txt
+```
+
+2. Chạy Agent:
+```
+python run_agent.py
+```
+
+3. Chọn chế độ:
+- AI Local (Ollama)
+- Google Gemini
+- Rule (không dùng AI)

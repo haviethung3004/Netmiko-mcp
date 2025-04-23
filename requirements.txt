@@ -3,4 +3,7 @@ requests
 python-dotenv
 openai
 ollama
-langchain
+genie
+pyats==23.9
+ollama
+genie.libs.genie
