@@ -1,11 +1,10 @@
 from langgraph.graph import StateGraph
-from logger.print_log import print_result, save_log_file
+from logger.print_log import print_result, save_log_file, log_step
 from core.state import AgentState
-from core.plan_generator import generate_plan
+from core.plan_generator import generate_plan_by_mode
 from core.llm_reasoner import reason_about_task
 from core.executor import execute_task
 from core.utils import should_retry
-from logger.print_log import log_step
 import argparse
 import os
 
@@ -23,15 +22,14 @@ def fix_task(state):
     log_step("fix", state)
     return state
 
-# Hàm chính để khởi chạy agent bằng LangGraph
+# ✅ Agent thông minh dùng LangGraph + AI (Ollama, Gemini, Rule) chọn theo mode
 def run_langgraph_agent():
-    # Cho phép nhập đề bài động từ dòng lệnh hoặc file
     parser = argparse.ArgumentParser()
     parser.add_argument("--task", help="Nội dung task (e.g., 'Configure OSPF')", required=False)
     parser.add_argument("--task_file", help="Đường dẫn file chứa đề bài", required=False)
+    parser.add_argument("--mode", help="Chọn chế độ AI reasoning: ollama / gemini / rule", default="rule")
     args = parser.parse_args()
 
-    # Ưu tiên task từ file nếu có
     if args.task_file and os.path.exists(args.task_file):
         with open(args.task_file, "r") as f:
             task_description = f.read().strip()
@@ -40,13 +38,18 @@ def run_langgraph_agent():
     else:
         raise ValueError("Cần truyền --task hoặc --task_file để khởi tạo Agent")
 
-    # Khởi tạo trạng thái ban đầu cho agent
     init_state = AgentState(task_description=task_description, retry_count=0)
+    mode = args.mode
 
-    # Xây dựng LangGraph
+    # 🌐 LangGraph với LLM reasoning theo chế độ
+    def generate_plan_with_mode(state):
+        steps = generate_plan_by_mode(state.task_description, mode=mode)
+        state.plan = " -> ".join(steps)
+        log_step("plan", state)
+        return state
+
     graph = StateGraph(AgentState)
-
-    graph.add_node("plan", generate_plan)
+    graph.add_node("plan", generate_plan_with_mode)
     graph.add_node("reason", reason_about_task)
     graph.add_node("execute", execute_task)
     graph.add_node("retry_check", should_retry)
@@ -56,21 +59,15 @@ def run_langgraph_agent():
     graph.add_edge("plan", "reason")
     graph.add_edge("reason", "execute")
     graph.add_edge("execute", "retry_check")
-
-    # Nếu có lỗi (ví dụ: neighbor, NAT...), đi nhánh fix, nếu không thì quay lại plan
     graph.add_conditional_edges(
         "retry_check",
         lambda s: "fix" if "fail" in (s.execution_result or "").lower() else "plan"
     )
+    graph.add_edge("fix", "reason")
 
-    graph.add_edge("fix", "reason")  # Sau khi fix thì reasoning lại
-
-    # Biên dịch và thực thi workflow
     workflow = graph.compile()
     result = workflow.invoke(init_state)
 
     print("✅ Final state:", result)
-
-    # 👉 In log chi tiết từng bước và lưu vào file  
     print_result()
     save_log_file(task_name=task_description)
