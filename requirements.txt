@@ -1,6 +1,0 @@
-netmiko
-requests
-python-dotenv
-openai
-ollama
-langchain
