@@ -1,4 +1,4 @@
-# MCP Network Automator
+# Netmiko mcp
 
 A powerful, AI-assisted solution for automating Cisco network device configuration and management using Model Context Protocol (MCP).
 
