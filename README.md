@@ -32,6 +32,9 @@ This project leverages UV for efficient Python environment and package managemen
 ```bash
 # Install UV
 pip install uv
+or
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex" #Windows
+# curl -LsSf https://astral.sh/uv/install.sh | sh # Linux/macOS
 
 # Create and activate virtual environment
 cd MCP_Network_automator
